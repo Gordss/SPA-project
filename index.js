@@ -6,12 +6,22 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
+const data = require('./dataParse/parser.js').getData('./data-sofia-oblast.json');
+
 app.use(bodyParser.json());
 app.use(express.static(path.join(__basedir, 'static')));
 
 
 app.get('/', function (req, res) {
 	res.sendFile(path.join(__basedir, 'index.html'));
+});
+
+app.get('/style.css', function (req, res) {
+	res.sendFile(path.join(__basedir, 'style.css'));
+});
+
+app.get('/getData', function (req, res) {
+	res.send(data);
 });
 
 app.get('*', function (req, res) {
@@ -25,7 +35,6 @@ app.use(function (err, req, res, next) {
 	}
 	res.status(500).send('SERVER ERROR');
 });
-
 
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);

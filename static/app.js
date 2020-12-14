@@ -1,29 +1,18 @@
 const ctx = document.getElementById('chart');
 
+const Http = new XMLHttpRequest();
+const url = '/getData';
+Http.open("GET", url, 0);
+Http.send();
+
+const {towns, townAverage} = JSON.parse(Http.responseText);
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: [
-            'БОТЕВГРАД',    'ГОДЕЧ',
-            'ГОРНА МАЛИНА', 'ДОЛНА БАНЯ',
-            'ДРАГОМАН',     'ЕЛИН ПЕЛИН',
-            'ЕТРОПОЛЕ',     'ЗЛАТИЦА',
-            'ИХТИМАН',      'КОПРИВЩИЦА',
-            'КОСТЕНЕЦ',     'КОСТИНБРОД',
-            'ПИРДОП',       'ПРАВЕЦ',
-            'САМОКОВ',      'СВОГЕ',
-            'СЛИВНИЦА',     'ЧЕЛОПЕЧ'
-        ],
+        labels: towns,
         datasets: [{
             label: ['Town average grade'],
-            data: [
-                '4.02', '4.00', '4.02',
-                '2.95', '4.37', '4.06',
-                '4.06', '4.00', '3.34',
-                '3.38', '4.30', '3.81',
-                '3.95', '4.63', '4.32',
-                '4.32', '4.14', '5.18'
-            ],
+            data: townAverage,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.4)',
                 'rgba(11, 19, 118, 0.4)',
