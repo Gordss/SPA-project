@@ -1,59 +1,61 @@
 const ctx = document.getElementById('chart');
 
+function random_rgba() {
+    let o = Math.round, r = Math.random, s = 255;
+    let red = o(r()*s);
+    let green = o(r()*s);
+    let blue = o(r()*s);
+    let additive = r().toFixed(1)
+    let color = 'rgba(' + red + ',' + green + ',' + blue + ',' + additive + ')';
+    let borderColor = 'rgba(' + red + ',' + green + ',' + blue + ',' + 1 + ')';
+    return [color,borderColor];
+}
+
 const Http = new XMLHttpRequest();
 const url = '/getData';
 Http.open("GET", url, 0);
 Http.send();
 
-const {towns, townAverage} = JSON.parse(Http.responseText);
-var myChart = new Chart(ctx, {
+const {towns, townAverage, gradesPerTown} = JSON.parse(Http.responseText);
+
+let colors = [];
+let borderColors = [];
+for (let i =0;i<towns.length;i++)
+{
+    let currentColors = random_rgba();
+    colors.push(currentColors[0]);
+    borderColors.push(currentColors[1]);
+}
+
+let myChart = new Chart(ctx, {
     type: 'bar',
     data: {
         labels: towns,
         datasets: [{
             label: ['Town average grade'],
             data: townAverage,
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.4)',
-                'rgba(11, 19, 118, 0.4)',
-                'rgba(103, 251, 162, 0.4)',
-                'rgba(141, 104, 233, 0.4)',
-                'rgba(13, 151, 162, 0.4)',
-                'rgba(37, 99, 119, 0.4)',
-                'rgba(193, 153, 113, 0.4)',
-                'rgba(11, 124, 100, 0.4)',
-                'rgba(232, 1, 191, 0.4)',
-                'rgba(52, 84, 13, 0.4)',
-                'rgba(47, 91, 186, 0.4)',
-                'rgba(34, 226, 186, 0.4)',
-                'rgba(251, 19, 219, 0.4)',
-                'rgba(95, 101, 189, 0.4)',
-                'rgba(249, 167, 94, 0.4)',
-                'rgba(31, 155, 187, 0.4)',
-                'rgba(216, 235, 52, 0.4)',
-                'rgba(28, 249, 142, 0.4)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(11, 19, 118, 1)',
-                'rgba(103, 251, 162, 1)',
-                'rgba(141, 104, 233, 1)',
-                'rgba(13, 151, 162, 1)',
-                'rgba(37, 99, 119, 1)',
-                'rgba(193, 153, 113, 1)',
-                'rgba(11, 124, 100, 1)',
-                'rgba(232, 1, 191, 1)',
-                'rgba(52, 84, 13, 1)',
-                'rgba(47, 91, 186, 1)',
-                'rgba(34, 226, 186, 1)',
-                'rgba(251, 19, 219, 1)',
-                'rgba(95, 101, 189, 1)',
-                'rgba(249, 167, 94, 1)',
-                'rgba(31, 155, 187, 1)',
-                'rgba(216, 235, 52, 1)',
-                'rgba(28, 249, 142, 1)'
-            ],
+            backgroundColor: colors,
+            borderColor: borderColors,
             borderWidth: 1
         }]
     },
 });
+
+
+const table = document.getElementById('table');
+
+
+
+for (let i=0;i<gradesPerTown.length;i++){
+    let row = table.insertRow(i);
+    let townCell = row.insertCell(0);
+    let dataCell = row.insertCell(1);
+    townCell.innerText = towns[i];
+    dataCell.innerText = gradesPerTown[i]['count'];
+}
+
+let headerRow = table.insertRow(0);
+let townName = headerRow.insertCell(0);
+let townCount = headerRow.insertCell(1);
+townName.innerText = "Име на населено място";
+townCount.innerText = "Брой оценки от извадката";

@@ -24,7 +24,9 @@ module.exports.getData = function (filename) {
     
     const towns = [];
     const townAverage = [];
+    const gradesPerTown =[];
     const result = Object.keys(parsedData).reduce(function(acc, current) {
+        gradesPerTown.push(parsedData[current]);
         const average = (parsedData[current].sum / parsedData[current].count).toPrecision(3);
         acc[current] = average;
         towns.push(current);
@@ -33,5 +35,5 @@ module.exports.getData = function (filename) {
     }, {});
     //console.log(towns);
     //console.log(townAverage);
-    return {towns, townAverage};
+    return {towns, townAverage,gradesPerTown};
 }

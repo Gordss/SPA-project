@@ -1,3 +1,22 @@
 h1 {
     text-align: center;
 }
+tr{
+    position: center;
+    text-align: center;
+    color: black;
+    background: aliceblue;
+    border: solid cyan;
+}
+table{
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+td{
+    border: solid deepskyblue;
+}
+body{
+    background: azure;
+}
